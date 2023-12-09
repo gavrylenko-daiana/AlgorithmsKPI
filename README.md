@@ -1,1 +1,1 @@
-# AlgorithmsKPI
+# 👨‍💻 Algorithms for KPI University
