@@ -1,4 +1,6 @@
-﻿namespace GraphABC.Implementation;
+﻿using System.Text;
+
+namespace GraphABC.Implementation;
 
 public class Network : ICloneable
 {
@@ -7,16 +9,17 @@ public class Network : ICloneable
     public int PaintVariety => Nodes.Select(n => n.Paint).Distinct().Count();
     
     public bool IsStructuredProperly => Nodes.All(n => n.IsColoredProperly);
-    
 
     public object Clone()
     {
         var connectivityMatrix = new int[Nodes.Count][];
         var colorings = Nodes.Select(node => node.Paint).ToArray();
+        
         foreach (var node in Nodes)
         {
             connectivityMatrix[node.Identifier] = new int[node.Connectivity];
             var i = 0;
+            
             foreach (var adjacent in node.AdjacentNodes)
             {
                 connectivityMatrix[node.Identifier][i++] = adjacent.Identifier;
@@ -30,11 +33,6 @@ public class Network : ICloneable
         return net;
     }
 
-    public override string ToString()
-    {
-        return string.Join("\\n", Nodes);
-    }
-
     public static Network ConstructNetwork(int totalNodes, int maxConnections)
     {
         var rng = new Random();
@@ -46,10 +44,10 @@ public class Network : ICloneable
         }
 
         var randomOrderNodes = net.Nodes.OrderBy(_ => rng.Next(totalNodes)).ToList();
+        
         for (var nodeIndex = 0; nodeIndex < randomOrderNodes.Count; nodeIndex++)
         {
             var first = randomOrderNodes[nodeIndex];
-
             var nextIndex = nodeIndex != randomOrderNodes.Count - 1 ? nodeIndex + 1 : 0;
             var second = randomOrderNodes[nextIndex];
 
@@ -64,7 +62,33 @@ public class Network : ICloneable
 
             net.ConnectNodes(first, second);
         }
+        
         return net;
+    }
+   
+    public override string ToString()
+    {
+        var output = new StringBuilder();
+        output.AppendLine("Network Structure:");
+        output.AppendLine(new string('-', 30));
+
+        foreach (var node in Nodes)
+        {
+            output.AppendLine($"Node #{node.Identifier} [Color: {node.Paint}]");
+            output.AppendLine("  |");
+            
+            foreach (var adjacent in node.AdjacentNodes)
+            {
+                output.AppendLine($"  |-- [Node #{adjacent.Identifier}: Color {adjacent.Paint}]");
+            }
+
+            if (node != Nodes.Last())
+            {
+                output.AppendLine();
+            }
+        }
+
+        return output.ToString();
     }
 
     private static Network FromMatrix(int[][] matrix)
@@ -90,9 +114,12 @@ public class Network : ICloneable
     private Node InsertNode(Node node)
     {
         if (Nodes.Any(n => n.Identifier == node.Identifier))
+        {
             throw new InvalidOperationException(nameof(node));
+        }
 
         Nodes.Add(node);
+        
         return Nodes.Find(n => n.Equals(node))!;
     }
 
@@ -102,7 +129,9 @@ public class Network : ICloneable
         var second = Nodes.First(n => n.Identifier == secondNode.Identifier);
 
         if (first == null || second == null)
+        {
             throw new ArgumentOutOfRangeException(nameof(firstNode), "One of the parameters is out of range");
+        }
 
         first.AddNeighbor(second);
     }

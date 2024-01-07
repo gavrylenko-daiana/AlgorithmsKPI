@@ -24,24 +24,9 @@ public class Node : IEquatable<Node>
         AdjacentNodes.Add(adjacent);
         adjacent.AdjacentNodes.Add(this);
     }
-
-    public override string ToString()
-    {
-        return $"{nameof(Identifier)}: {Identifier}, {nameof(Paint)}: {Paint}, {nameof(Connectivity)}: {Connectivity}";
-    }
-
+    
     public bool Equals(Node? other)
     {
         return other?.Identifier == Identifier && other.Paint == Paint;
-    }
-    
-    public override bool Equals(object? obj)
-    {
-        return Equals(obj as Node);
-    }
-    
-    public override int GetHashCode()
-    {
-        return Identifier.GetHashCode();
     }
 }

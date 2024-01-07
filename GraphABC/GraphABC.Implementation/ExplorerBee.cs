@@ -22,12 +22,14 @@ public class ExplorerBee
 
         ChosenNodeId = node.Identifier;
         AlreadyChosen.Add(node);
+        
         return node;
     }
 
     public double EvaluateNodeValue(Node node, IEnumerable<Node> chosenNodes, int observers)
     {
         var totalConnectivity = chosenNodes.Sum(n => n.Connectivity);
+        
         return observers * ((double)node.Connectivity / totalConnectivity);
     }
 
