@@ -14,12 +14,19 @@ class Program
         var idsResult = idsSolver.Solve(printSteps: true);
         Console.WriteLine("Iterative Deepening Search Result:");
         PrintResult(idsResult);
+        Console.WriteLine($"Total Dead Ends: {idsSolver.DeadEndCount}");
+        Console.WriteLine($"Total States: {idsSolver.TotalStates}");
+        Console.WriteLine($"Max States in Memory: {idsSolver.MaxStatesInMemory}\n");
 
         // Recursive Best-First Search
         var rbfsSolver = new RecursiveBestFirstSolver(maze, point => HeuristicH3(point, maze.End));
         var rbfsResult = rbfsSolver.Solve(printSteps: true);
-        Console.WriteLine("Recursive Best-First Search Result:");
+        Console.WriteLine("\nRecursive Best-First Search Result:");
         PrintResult(rbfsResult);
+        Console.WriteLine($"Total Dead Ends: {rbfsSolver.DeadEndCount}");
+        Console.WriteLine($"Total States: {rbfsSolver.TotalStates}");
+        Console.WriteLine($"Max States in Memory: {rbfsSolver.MaxStatesInMemory}");
+
     }
 
     static int HeuristicH3((int row, int col) point, (int row, int col) goal)

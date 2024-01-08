@@ -8,6 +8,9 @@ using System.Collections.Generic;
 public class IterativeDeepeningSolver
 {
     private int _iterationCount = 0;
+    private int _deadEndCount = 0;
+    private int _totalStates = 0;
+    private int _maxStatesInMemory = 0;
     private readonly MazeModel _maze;
 
     public IterativeDeepeningSolver(MazeModel maze)
@@ -40,8 +43,18 @@ public class IterativeDeepeningSolver
     private PathFindingResult DeepFirstSearch((int, int) current, int depth, HashSet<(int, int)> visited,
         bool printSteps, Stack<(int, int)> path)
     {
-        if (depth == 0) return new PathFindingResult(null, int.MaxValue);
-        if (visited.Contains(current)) return new PathFindingResult(null, int.MaxValue);
+        _totalStates++;
+        
+        if (depth == 0)
+        {
+            _deadEndCount++;
+            return new PathFindingResult(null, int.MaxValue);
+        }
+
+        if (visited.Contains(current))
+        {
+            return new PathFindingResult(null, int.MaxValue);
+        }
 
         _iterationCount++;
 
@@ -76,6 +89,9 @@ public class IterativeDeepeningSolver
 
         path.Pop();
         visited.Remove(current);
+        
+        _maxStatesInMemory = Math.Max(_maxStatesInMemory, visited.Count + path.Count);
+
         return new PathFindingResult(null, int.MaxValue);
     }
 
@@ -89,4 +105,8 @@ public class IterativeDeepeningSolver
     {
         return Math.Abs(start.Item1 - end.Item1) + Math.Abs(start.Item2 - end.Item2) + 1;
     }
+    
+    public int DeadEndCount => _deadEndCount;
+    public int TotalStates => _totalStates;
+    public int MaxStatesInMemory => _maxStatesInMemory;
 }

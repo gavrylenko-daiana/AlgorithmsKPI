@@ -6,6 +6,9 @@ namespace Maze.Search;
 public class RecursiveBestFirstSolver
 {
     private int _iterationCount = 0;
+    private int _deadEndCount = 0;
+    private int _totalStates = 0;
+    private int _maxStatesInMemory = 0;
     private readonly MazeModel _maze;
     private readonly Func<(int, int), int> _heuristic;
     private static int SomeMargin = 1;
@@ -27,6 +30,9 @@ public class RecursiveBestFirstSolver
 
     private PathFindingResult RecursiveSearch((int, int) current, int limit, HashSet<(int, int)> visited, bool printSteps, Stack<(int, int)> path)
     {
+        _totalStates++;
+        _maxStatesInMemory = Math.Max(_maxStatesInMemory, visited.Count + path.Count);
+
         _iterationCount++;
         
         if (printSteps)
@@ -49,6 +55,7 @@ public class RecursiveBestFirstSolver
             
             if (children.Count == 0)
             {
+                _deadEndCount++;
                 path.Pop();
                 
                 return new PathFindingResult(null, int.MaxValue);
@@ -72,4 +79,8 @@ public class RecursiveBestFirstSolver
 
         return new PathFindingResult(null, int.MaxValue);
     }
+    
+    public int DeadEndCount => _deadEndCount;
+    public int TotalStates => _totalStates;
+    public int MaxStatesInMemory => _maxStatesInMemory;
 }
