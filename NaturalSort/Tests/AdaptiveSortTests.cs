@@ -103,7 +103,6 @@ namespace Tests
             }
             finally
             {
-                // Ensure that the file attributes are set back to normal to avoid cleanup issues
                 File.SetAttributes(testFilePath, FileAttributes.Normal);
             }
 
