@@ -31,22 +31,5 @@ namespace RedBlackTreeVisualizer.Tests.UnitTesting.xUnit
             // Assert
             Assert.False(isValid);
         }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("abc")]
-        [InlineData("-1")]
-        [InlineData("1,45,95")]
-        [InlineData("-10.25")]
-        [InlineData("5a")]
-        public void IsCompensationValid_ReturnsFalse(string? inputLine)
-        {
-            // Act
-            var isValid = DataValidator.IsCompensationValid(inputLine);
-
-            // Assert
-            Assert.False(isValid);
-        }
     }
 }
