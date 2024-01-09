@@ -101,25 +101,4 @@ public class BeeColonyAlgorithm
 
         Console.WriteLine();
     }
-    
-    private static int[][] CreateConnectivityMatrix(Network network)
-    {
-        int[][] connectivityMatrix = new int[network.Nodes.Count][];
-
-        for (int i = 0; i < network.Nodes.Count; i++)
-        {
-            connectivityMatrix[i] = network.Nodes[i].AdjacentNodes
-                .Select(adjacentNode => adjacentNode.Identifier)
-                .ToArray();
-        }
-
-        return connectivityMatrix;
-    }
-
-    private static int CalculateTotalConnections(Network network)
-    {
-        int totalConnections = network.Nodes.Sum(node => node.AdjacentNodes.Count);
-        
-        return totalConnections / 2;
-    }
 }
