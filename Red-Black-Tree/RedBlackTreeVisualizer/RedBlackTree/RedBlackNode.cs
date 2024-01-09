@@ -46,24 +46,7 @@ namespace RedBlackTreeVisualizer.RedBlackTree
                 return previous;
             }
         }
-
-        public RedBlackNode<T>? InOrderSuccessor
-        {
-            get
-            {
-                RedBlackNode<T>? previous = null;
-                RedBlackNode<T>? current = Right;
-
-                while (current != null)
-                {
-                    previous = current;
-                    current = current.Left;
-                }
-
-                return previous;
-            }
-        }
-
+        
         public RedBlackNode(int key, T value)
         {
             Left = null;
