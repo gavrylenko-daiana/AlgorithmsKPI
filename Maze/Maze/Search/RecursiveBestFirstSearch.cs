@@ -5,6 +5,10 @@ namespace Maze.Search;
 
 public class RecursiveBestFirstSolver
 {
+    public int DeadEndCount => _deadEndCount;
+    public int TotalStates => _totalStates;
+    public int MaxStatesInMemory => _maxStatesInMemory;
+
     private int _iterationCount = 0;
     private int _deadEndCount = 0;
     private int _totalStates = 0;
@@ -79,8 +83,4 @@ public class RecursiveBestFirstSolver
 
         return new PathFindingResult(null, int.MaxValue);
     }
-    
-    public int DeadEndCount => _deadEndCount;
-    public int TotalStates => _totalStates;
-    public int MaxStatesInMemory => _maxStatesInMemory;
 }

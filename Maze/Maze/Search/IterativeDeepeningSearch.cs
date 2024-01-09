@@ -4,9 +4,14 @@ namespace Maze.Search;
 
 using Models;
 using System.Collections.Generic;
+using System.Drawing;
 
 public class IterativeDeepeningSolver
 {
+    public int DeadEndCount => _deadEndCount;
+    public int TotalStates => _totalStates;
+    public int MaxStatesInMemory => _maxStatesInMemory;
+
     private int _iterationCount = 0;
     private int _deadEndCount = 0;
     private int _totalStates = 0;
@@ -44,7 +49,7 @@ public class IterativeDeepeningSolver
         bool printSteps, Stack<(int, int)> path)
     {
         _totalStates++;
-        
+
         if (depth == 0)
         {
             _deadEndCount++;
@@ -89,7 +94,7 @@ public class IterativeDeepeningSolver
 
         path.Pop();
         visited.Remove(current);
-        
+
         _maxStatesInMemory = Math.Max(_maxStatesInMemory, visited.Count + path.Count);
 
         return new PathFindingResult(null, int.MaxValue);
@@ -105,8 +110,4 @@ public class IterativeDeepeningSolver
     {
         return Math.Abs(start.Item1 - end.Item1) + Math.Abs(start.Item2 - end.Item2) + 1;
     }
-    
-    public int DeadEndCount => _deadEndCount;
-    public int TotalStates => _totalStates;
-    public int MaxStatesInMemory => _maxStatesInMemory;
 }
